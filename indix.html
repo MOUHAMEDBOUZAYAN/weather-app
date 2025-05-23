@@ -4,192 +4,351 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather App</title>
+    <title>WeatherPro - Professional Weather App</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css">
+    
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Meta Tags for SEO -->
+    <meta name="description" content="Professional weather app with real-time forecasts, air quality index, and beautiful design">
+    <meta name="keywords" content="weather, forecast, temperature, humidity, air quality">
+    <meta name="author" content="WeatherPro">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌤️</text></svg>">
 </head>
 
 <body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <i class="fas fa-cloud-sun"></i>
+            </div>
+            <div class="loading-text">WeatherPro</div>
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
     <div class="container">
+        <!-- Header Section -->
         <header class="header">
-            <h2>Weather</h2>
-            <div class="weather-input">
-                <input type="text" name="city" id="city_input" placeholder="Enter city name">
-                <button type="button" id="searchBtn">
-                    <i class="fa-regular fa-search"></i> Search
-                </button>
-                <button type="button" id="favoriteBtn">
-                    <i class="fa-regular fa-star"></i> Favorites
-                </button>
-                <button type="button" id="locationBtn">
-                    <i class="bx bx-target-lock"></i> Current location
-                </button>
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-cloud-sun"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>WeatherPro</h1>
+                        <p>Professional Weather Forecast</p>
+                    </div>
+                </div>
+                
+                <div class="weather-input">
+                    <div class="search-container">
+                        <input type="text" name="city" id="city_input" placeholder="Search for a city...">
+                        <button type="button" id="searchBtn" class="search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button type="button" id="favoriteBtn" class="btn btn-favorite" title="Add to Favorites">
+                            <i class="fas fa-heart"></i>
+                            <span>Favorites</span>
+                        </button>
+                        <button type="button" id="locationBtn" class="btn btn-location" title="Current Location">
+                            <i class="fas fa-location-crosshairs"></i>
+                            <span>My Location</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </header>
         
+        <!-- Weather Data Section -->
         <main class="weather-data">
+            <!-- Left Panel - Current Weather & Forecast -->
             <section class="weather-left">
-                <div class="card">
-                    <div class="current-weather">
-                        <div class="details">
-                            <p>Now</p>
-                            <h2>___&deg;C</h2>
-                            <p>_____</p>
-                        </div>
-                        <div class="weather-icon">
-                            <img src="https://openweathermap.org/img/wn/04d@2x.png" alt="">
+                <!-- Current Weather Card -->
+                <div class="card current-weather-card">
+                    <div class="card-header">
+                        <h3>Current Weather</h3>
+                        <div class="last-updated" id="lastUpdated">
+                            <i class="fas fa-clock"></i>
+                            <span>Just now</span>
                         </div>
                     </div>
-                    <hr>
-                    <div class="card-footer">
-                        <p><i class="fa-light fa-calendar"></i>______</p>
-                        <p><i class="fa-light fa-location-dot"></i>______</p>
+                    
+                    <div class="current-weather">
+                        <div class="weather-main">
+                            <div class="temperature">
+                                <span class="temp-value">__</span>
+                                <span class="temp-unit">°C</span>
+                            </div>
+                            <div class="weather-description">
+                                <h4>______</h4>
+                                <p>Feels like __°C</p>
+                            </div>
+                        </div>
+                        
+                        <div class="weather-icon">
+                            <img src="https://openweathermap.org/img/wn/04d@4x.png" alt="Weather Icon">
+                        </div>
+                    </div>
+                    
+                    <div class="weather-details">
+                        <div class="detail-item">
+                            <i class="fas fa-eye"></i>
+                            <span>Visibility</span>
+                            <strong id="currentVisibility">__ km</strong>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-wind"></i>
+                            <span>Wind</span>
+                            <strong id="currentWind">__ m/s</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="location-info">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span id="currentLocation">_______</span>
+                        <div class="date-time" id="currentDateTime">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>______</span>
+                        </div>
                     </div>
                 </div>
-                <div class="card">
-                    <h2>5-day Forecast</h2>
-                    <div class="day-forecast">
-                        <!-- 5-day forecast items will be populated dynamically -->
+
+                <!-- 5-Day Forecast -->
+                <div class="card forecast-card">
+                    <div class="card-header">
+                        <h3>5-Day Forecast</h3>
+                        <div class="forecast-toggle">
+                            <button class="toggle-btn active" data-type="daily">Daily</button>
+                            <button class="toggle-btn" data-type="hourly">Hourly</button>
+                        </div>
+                    </div>
+                    <div class="forecast-content">
+                        <div class="day-forecast" id="dayForecast">
+                            <!-- 5-day forecast items will be populated dynamically -->
+                        </div>
+                        <div class="hourly-forecast hidden" id="hourlyForecast">
+                            <!-- Hourly forecast items will be populated dynamically -->
+                        </div>
                     </div>
                 </div>
             </section>
             
+            <!-- Right Panel - Highlights & Details -->
             <section class="weather-right">
-                <h2>Today's Highlights</h2>
-                <div class="highlights">
-                    <div class="card">
-                        <div class="card-head">
-                            <p>Air Quality Index</p>
-                            <p class="air-index aqi-1">Good</p>
-                        </div>
-                        <div class="air-indices">
-                            <i class="fa-regular fa-wind fa-3x"></i>
-                            <div class="item">
-                                <p>PM2.5</p>
-                                <h2>_____</h2>
-                            </div>
-                            <div class="item">
-                                <p>PM10</p>
-                                <h2>_____</h2>
-                            </div>
-                            <div class="item">
-                                <p>SO2</p>
-                                <h2>_____</h2>
-                            </div>
-                            <div class="item">
-                                <p>CO</p>
-                                <h2>_____</h2>
-                            </div>
-                            <div class="item">
-                                <p>NO</p>
-                                <h2>_____</h2>
-                            </div>
-                            <div class="item">
-                                <p>NO2</p>
-                                <h2>_____</h2>
-                            </div>
-                            <div class="item">
-                                <p>NH3</p>
-                                <h2>_____</h2>
-                            </div>
-                            <div class="item">
-                                <p>O3</p>
-                                <h2>_____</h2>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-head">
-                            <p>Sunrise & Sunset</p>
-                        </div>
-                        <div class="sunrise-sunset">
-                            <div class="item">
-                                <div class="icon">
-                                    <i class="fa-light fa-sunrise fa-4x"></i>
-                                </div>
-                                <div>
-                                    <p>Sunrise</p>
-                                    <h2 id="sunriseVal">___</h2>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="icon">
-                                    <i class="fa-light fa-sunset fa-4x"></i>
-                                </div>
-                                <div>
-                                    <p>Sunset</p>
-                                    <h2 id="sunsetVal">___</h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-head">
-                            <p>Humidity</p>
-                        </div>
-                        <div class="card-item">
-                            <i class="fa-light fa-droplet fa-2x"></i>
-                            <h2 id="humidityVal">___%</h2>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-head">
-                            <p>Pressure</p>
-                        </div>
-                        <div class="card-item">
-                            <i class="fa-light fa-compass fa-2x"></i>
-                            <h2 id="pressureVal">___ hPa</h2>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-head">
-                            <p>Visibility</p>
-                        </div>
-                        <div class="card-item">
-                            <i class="fa-light fa-eye fa-2x"></i>
-                            <h2 id="visibilityVal">___ km</h2>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-head">
-                            <p>Wind Speed</p>
-                        </div>
-                        <div class="card-item">
-                            <i class="fa-light fa-location-arrow fa-2x"></i>
-                            <h2 id="windSpeedVal">___ m/s</h2>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-head">
-                            <p>Feels Like</p>
-                        </div>
-                        <div class="card-item">
-                            <i class="fa-light fa-temperature-list fa-2x"></i>
-                            <h2 id="feelsVal">___&deg;C</h2>
-                        </div>
+                <div class="section-header">
+                    <h2>Today's Highlights</h2>
+                    <div class="refresh-btn" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i>
                     </div>
                 </div>
-                <h2>Hourly Forecast</h2>
-                <div class="hourly-forecast">
-                    <!-- Hourly forecast items will be populated dynamically -->
+                
+                <div class="highlights-grid">
+                    <!-- Air Quality Index -->
+                    <div class="card highlight-card aqi-card">
+                        <div class="card-header">
+                            <h4>Air Quality Index</h4>
+                            <div class="aqi-badge" id="aqiBadge">
+                                <span>Good</span>
+                            </div>
+                        </div>
+                        <div class="aqi-content">
+                            <div class="aqi-main">
+                                <div class="aqi-circle">
+                                    <svg class="aqi-progress" viewBox="0 0 100 100">
+                                        <circle cx="50" cy="50" r="40" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="none"/>
+                                        <circle cx="50" cy="50" r="40" stroke="#4ade80" stroke-width="8" fill="none" 
+                                                stroke-dasharray="251.2" stroke-dashoffset="200" stroke-linecap="round"/>
+                                    </svg>
+                                    <div class="aqi-value">
+                                        <span id="aqiValue">--</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="aqi-details" id="aqiDetails">
+                                <!-- Air quality components will be populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sunrise & Sunset -->
+                    <div class="card highlight-card sun-card">
+                        <div class="card-header">
+                            <h4>Sun & Moon</h4>
+                        </div>
+                        <div class="sun-content">
+                            <div class="sun-arc">
+                                <div class="sun-path"></div>
+                                <div class="sun-position" id="sunPosition"></div>
+                            </div>
+                            <div class="sun-times">
+                                <div class="sun-time">
+                                    <i class="fas fa-sun sunrise-icon"></i>
+                                    <div>
+                                        <span>Sunrise</span>
+                                        <strong id="sunriseTime">--:--</strong>
+                                    </div>
+                                </div>
+                                <div class="sun-time">
+                                    <i class="fas fa-moon sunset-icon"></i>
+                                    <div>
+                                        <span>Sunset</span>
+                                        <strong id="sunsetTime">--:--</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Weather Metrics Grid -->
+                    <div class="card highlight-card metric-card">
+                        <div class="card-header">
+                            <h4>
+                                <i class="fas fa-tint"></i>
+                                Humidity
+                            </h4>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-value">
+                                <span id="humidityVal">--%</span>
+                            </div>
+                            <div class="metric-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="humidityProgress"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card highlight-card metric-card">
+                        <div class="card-header">
+                            <h4>
+                                <i class="fas fa-gauge-high"></i>
+                                Pressure
+                            </h4>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-value">
+                                <span id="pressureVal">---- hPa</span>
+                            </div>
+                            <div class="pressure-indicator">
+                                <div class="pressure-arrow" id="pressureArrow"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card highlight-card metric-card">
+                        <div class="card-header">
+                            <h4>
+                                <i class="fas fa-eye"></i>
+                                Visibility
+                            </h4>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-value">
+                                <span id="visibilityVal">-- km</span>
+                            </div>
+                            <div class="visibility-scale">
+                                <div class="scale-markers">
+                                    <span>Poor</span>
+                                    <span>Good</span>
+                                    <span>Excellent</span>
+                                </div>
+                                <div class="scale-indicator" id="visibilityIndicator"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card highlight-card metric-card">
+                        <div class="card-header">
+                            <h4>
+                                <i class="fas fa-wind"></i>
+                                Wind Speed
+                            </h4>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-value">
+                                <span id="windSpeedVal">-- m/s</span>
+                            </div>
+                            <div class="wind-compass">
+                                <div class="compass-arrow" id="windDirection"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card highlight-card metric-card">
+                        <div class="card-header">
+                            <h4>
+                                <i class="fas fa-temperature-half"></i>
+                                Feels Like
+                            </h4>
+                        </div>
+                        <div class="metric-content">
+                            <div class="metric-value">
+                                <span id="feelsVal">--°C</span>
+                            </div>
+                            <div class="feels-indicator">
+                                <div class="feels-scale">
+                                    <span>Cold</span>
+                                    <span>Comfortable</span>
+                                    <span>Hot</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
         </main>
 
         <!-- Favorites Section -->
         <section class="favorites-section">
-            <h2>Favorites</h2>
-            <div class="favorites-list" id="favoritesList">
-                <!-- Favorite cities will be populated dynamically -->
+            <div class="section-header">
+                <h2>
+                    <i class="fas fa-heart"></i>
+                    Favorite Locations
+                </h2>
+                <button class="btn btn-add-favorite" id="toggleFavoritesBtn">
+                    <i class="fas fa-plus"></i>
+                    <span>Add Location</span>
+                </button>
             </div>
-            <div class="favorite-input">
-                <input type="text" id="favoriteCityInput" placeholder="Enter city name">
-                <button type="button" id="addFavoriteBtn">Add to Favorites</button>
+            
+            <div class="add-favorite-form hidden" id="addFavoriteForm">
+                <div class="form-group">
+                    <input type="text" id="favoriteCityInput" placeholder="Enter city name...">
+                    <button type="button" id="addFavoriteBtn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Add
+                    </button>
+                </div>
+            </div>
+            
+            <div class="favorites-grid" id="favoritesList">
+                <!-- Favorite locations will be populated dynamically -->
+                <div class="empty-favorites">
+                    <i class="fas fa-heart"></i>
+                    <h3>No Favorites Yet</h3>
+                    <p>Add your favorite locations to quickly check their weather</p>
+                </div>
             </div>
         </section>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <script src="main.js"></script>
 </body>
 

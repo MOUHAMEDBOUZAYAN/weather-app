@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Create a HTML list using JavaScript</title>
+</head>
+
+<body>
+    <h1>les noms</h1>
+    <button id="btn4">click</button>
+    <div id="div4">
+        <ul id="listContainer"></ul> 
+    </div>
+
+    <script>
+        var listContainer = document.querySelector('#listContainer');
+        var question4 = document.querySelector('#btn4');
+        var index = 0;
+        var listContent = ['mohamed', 'yassin', 'ali','manal'];
+
+        question4.addEventListener('click',  
+        function switch4() {
+            if (index < listContent.length) { 
+                var newElement = document.createElement('li');
+                newElement.textContent = listContent[index++];
+                listContainer.appendChild(newElement);
+            } else {
+                alert('All items have been added.'); 
+                    };
+        })
+
+       
+    </script>
+</body>
+
+</html>

@@ -109,9 +109,9 @@ function getWeatherDetails(name, lat, lon, country, state) {
                     <p><i class="fa-light fa-location-dot"></i>${name}, ${country}</p>
                 </div>`;
 
-            let sunrise = data.sys.sunrise * 1000; // Convert to milliseconds
-            let sunset = data.sys.sunset * 1000; // Convert to milliseconds
-            let timezoneOffset = data.timezone; // Timezone offset in seconds
+            let sunrise = data.sys.sunrise * 1000; 
+            let sunset = data.sys.sunset * 1000; 
+            let timezoneOffset = data.timezone; 
 
             let sunriseTime = moment(sunrise).utcOffset(timezoneOffset / 3600).format('hh:mm A');
             let sunsetTime = moment(sunset).utcOffset(timezoneOffset / 3600).format('hh:mm A');
@@ -149,15 +149,14 @@ function getWeatherDetails(name, lat, lon, country, state) {
                         <img src="https://openweathermap.org/img/wn/${data.list[i].weather[0].icon}.png" alt="">
                         <p>${(data.list[i].main.temp - 273.15).toFixed(2)}&deg;C</p>
                     </div>`;
-            }
-
+            }  
             let uniqueForecastDays = [];
             let fiveDaysForecast = data.list.filter(forecast => {
                 let forecastDate = new Date(forecast.dt_txt).getDate();
                 if (!uniqueForecastDays.includes(forecastDate)) {
                     uniqueForecastDays.push(forecastDate);
                     return true;
-                }
+                } 
                 return false;
             });
             fiveDaysForecastCard.innerHTML = '';
@@ -246,7 +245,7 @@ cityInput.addEventListener('keyup', e => e.key === 'Enter' && getCityCoordinates
 addFavoriteBtn.addEventListener('click', () => {
     const favoriteCityName = favoriteCityInput.value.trim();
     if (favoriteCityName && !favorites.includes(favoriteCityName)) {
-        favorites.push(favoriteCityName); // Add city to favorites
+        favorites.push(favoriteCityName); // Correctly add city to favorites
         favoriteCityInput.value = ''; // Clear input field
         renderFavorites(); // Update the favorites list
         updateLocalStorage(); // Save to localStorage
